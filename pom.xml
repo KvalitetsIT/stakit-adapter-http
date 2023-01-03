@@ -31,10 +31,10 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.0.1</version>
 	</parent>
-	<groupId>dk.kvalitetsit.kithugs</groupId>
-	<artifactId>kithugs</artifactId>
+	<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
+	<artifactId>stakit-adapter-http</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kithugs</name>
+	<name>stakit-adapter-http</name>
 	<description>KITHUGS service</description>
 
 	<properties>
@@ -57,25 +57,25 @@
 		<dependencies>
 			<!-- Modules in project -->
 			<dependency>
-				<groupId>dk.kvalitetsit.kithugs</groupId>
+				<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
 				<artifactId>service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>dk.kvalitetsit.kithugs</groupId>
+				<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
 				<artifactId>integrationtest</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>dk.kvalitetsit.kithugs</groupId>
+				<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
 				<artifactId>web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>dk.kvalitetsit.kithugs</groupId>
+				<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
 				<artifactId>documentation</artifactId>
 				<version>${project.version}</version>
 			</dependency>
