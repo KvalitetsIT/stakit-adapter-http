@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.testcontainers.DockerClientFactory;
-import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
@@ -19,7 +18,6 @@ public class ServiceStarter {
     private static final Logger serviceLogger = LoggerFactory.getLogger("stakit-adapter-http");
 
     private Network dockerNetwork;
-    private String jdbcUrl;
 
     public void startServices() {
         dockerNetwork = Network.newNetwork();
@@ -52,14 +50,6 @@ public class ServiceStarter {
                 .withNetworkAliases("stakit-adapter-http")
 
                 .withEnv("LOG_LEVEL", "INFO")
-
-                .withEnv("JDBC_URL", "jdbc:mariadb://mariadb:3306/hellodb")
-                .withEnv("JDBC_USER", "hellouser")
-                .withEnv("JDBC_PASS", "secret1234")
-
-                .withEnv("spring.flyway.locations", "classpath:db/migration,filesystem:/app/sql")
-                .withClasspathResourceMapping("db/migration/V901__extra_data_for_integration_test.sql", "/app/sql/V901__extra_data_for_integration_test.sql", BindMode.READ_ONLY)
-//                .withEnv("JVM_OPTS", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000")
 
                 .withExposedPorts(8081,8080)
                 .waitingFor(Wait.forHttp("/actuator").forPort(8081).forStatusCode(200));
