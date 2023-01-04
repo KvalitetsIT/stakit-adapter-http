@@ -15,7 +15,6 @@ jobs:
     - name: Setup env variables
       run: |
         echo "DOCKER_SERVICE=kvalitetsit/stakit-adapter-http" >> $GITHUB_ENV
-        echo "DOCKER_DOCUMENTATION=kvalitetsit/stakit-adapter-http-documentation" >> $GITHUB_ENV
 
 # Checkout source code
     - uses: actions/checkout@v3
@@ -61,18 +60,6 @@ jobs:
     - name: Push service git id docker image.
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
 
-    - name: Tag documentation dev docker image
-      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:dev
-
-    - name: Push documentation dev docker image
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:dev
-
-    - name: Tag documentation git id docker image
-      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:${{ github.sha }}
-
-    - name: Push documentation git id docker image.
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:${{ github.sha }}
-
     - name: Push latest service docker image
       if: ${{ steps.tag.conclusion != 'skipped' }}
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:latest
@@ -84,18 +71,6 @@ jobs:
     - name: Push version service docker image.
       if: ${{ steps.tag.conclusion != 'skipped' }}
       run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
-
-    - name: Push latest documentation docker image
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:latest
-
-    - name: Tag version documentation docker image
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:${{ steps.tag.outputs.VERSION }}
-
-    - name: Push version documentation docker image.
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:${{ steps.tag.outputs.VERSION }}
 
     - name: Create Release Notes
       uses: softprops/action-gh-release@v1
