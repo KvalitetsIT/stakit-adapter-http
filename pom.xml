@@ -24,7 +24,6 @@
 		<module>service</module>
         <module>integrationtest</module>
 		<module>testreport</module>
-		<module>documentation</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -71,12 +70,6 @@
 			<dependency>
 				<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
 				<artifactId>web</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>dk.kvalitetsit.stakit-adapter-http</groupId>
-				<artifactId>documentation</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -133,12 +126,6 @@
 			<dependency>
 				<groupId>org.testcontainers</groupId>
 				<artifactId>mockserver</artifactId>
-				<version>${testcontainers.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.testcontainers</groupId>
-				<artifactId>mariadb</artifactId>
 				<version>${testcontainers.version}</version>
 			</dependency>
 
