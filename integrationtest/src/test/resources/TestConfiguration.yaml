@@ -1,0 +1,11 @@
+stakit:
+  endpoint: https://backend.dk/
+  apiKey: MY-SUPE-SECRET-KEY
+frequency: PT5M
+monitoring:
+  - serviceIdentifier: unikt id
+    serviceName: Læsbart navn
+    endpoint: https://service-to-monitor
+  - serviceIdentifier: andet unikt id
+    serviceName: Noget andet navn
+    endpoint: http://en anden service

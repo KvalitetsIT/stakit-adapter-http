@@ -22,6 +22,8 @@ public class ServiceStarter {
     public void startServices() {
         dockerNetwork = Network.newNetwork();
 
+        System.setProperty("Configuration-yaml", "integrationtest/src/test/resources/TestConfiguration.yaml");
+
         SpringApplication.run(Application.class);
     }
 
