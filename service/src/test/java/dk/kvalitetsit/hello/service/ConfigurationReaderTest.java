@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,6 +32,7 @@ public class ConfigurationReaderTest {
         assertEquals("PT5M", result.getFrequency());
 
         assertNotNull(result.getMonitoring());
+        assertEquals("class java.util.ArrayList", result.getMonitoring().getClass().toString());
         assertEquals(2, result.getMonitoring().size());
         assertEquals("unikt id", result.getMonitoring().get(0).getServiceIdentifier());
         assertEquals("Noget andet navn", result.getMonitoring().get(1).getServiceName());
