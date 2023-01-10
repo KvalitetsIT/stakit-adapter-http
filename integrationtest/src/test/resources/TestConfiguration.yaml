@@ -1,11 +1,11 @@
 stakit:
-  endpoint: https://backend.dk/
+  endpoint: http://localhost:1090
   apiKey: MY-SUPE-SECRET-KEY
 frequency: PT5M
 monitoring:
   - serviceIdentifier: unikt id
     serviceName: Læsbart navn
-    endpoint: https://service-to-monitor
+    endpoint: http://localhost:1080/is/ok
   - serviceIdentifier: andet unikt id
     serviceName: Noget andet navn
-    endpoint: http://en anden service
+    endpoint: http://localhost:1080/is/not/ok

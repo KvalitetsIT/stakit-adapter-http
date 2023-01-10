@@ -1,15 +1,13 @@
 package dk.kvalitetsit.hello.configuration;
 
-import dk.kvalitetsit.hello.service.ConfigurationReader;
-import dk.kvalitetsit.hello.service.HelloService;
-import dk.kvalitetsit.hello.service.HelloServiceImpl;
-import dk.kvalitetsit.hello.service.MonitoringService;
+import dk.kvalitetsit.hello.service.*;
 import dk.kvalitetsit.hello.service.model.ConfigurationModel;
+import dk.kvalitetsit.hello.stakitClient.StatusCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.FileNotFoundException;
 
@@ -17,23 +15,23 @@ import java.io.FileNotFoundException;
 @EnableScheduling
 public class HelloConfiguration{
 
-    @Scheduled(fixedRate = 5000)
-    public void printStuffRepeatedly() {
-        System.out.print("Does it work? ");
-    }
-
     @Bean
-    public HelloService helloService() {
-        return new HelloServiceImpl();
-    }
-
-    @Bean
-    public MonitoringService monitoringService(ConfigurationModel input) {
-        return new MonitoringService(input.getMonitoring());
+    public MonitoringService monitoringService(ConfigurationModel input, HttpMonitorService httpMonitorService, StatusCode statusCode) {
+        return new MonitoringService(input, httpMonitorService, statusCode);
     }
 
     @Bean
     public ConfigurationModel configurationModel(@Value("${Configuration-yaml}") String filePath) throws FileNotFoundException {
         return new ConfigurationReader().readConfiguration(filePath);
+    }
+
+    @Bean
+    public HttpMonitorService httpMonitorService(){
+        return new HttpMonitorService();
+    }
+
+    @Bean
+    public StatusCode statusCode(WebClient.Builder webClientBuilder, ConfigurationModel configurationModel){
+        return new StatusCode(webClientBuilder, configurationModel.getStakit().getEndpoint(), configurationModel.getStakit().getApiKey());
     }
 }
