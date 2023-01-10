@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.testcontainers.DockerClientFactory;
+import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.Network;
@@ -24,6 +25,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.function.Consumer;
 
@@ -87,6 +89,10 @@ public class ServiceStarter {
                 .withNetworkAliases("stakit-adapter-http")
 
                 .withEnv("LOG_LEVEL", "INFO")
+
+                .withEnv("Configuration-yaml", "/TestConfiguration-docker.yaml")
+
+                .withClasspathResourceMapping("TestConfiguration-docker.yaml", "/TestConfiguration-docker.yaml", BindMode.READ_ONLY)
 
                 .withExposedPorts(8081,8080)
                 .waitingFor(Wait.forHttp("/actuator").forPort(8081).forStatusCode(200));
