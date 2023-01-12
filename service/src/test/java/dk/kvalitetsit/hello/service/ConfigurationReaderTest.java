@@ -19,8 +19,6 @@ public class ConfigurationReaderTest {
 
     @Test
     public void monitorTest() throws FileNotFoundException {
-        //System.out.println(Paths.get(".").toAbsolutePath());
-
         var input = "src/test/resources/TestConfiguration.yaml";
 
         var result = configurationReader.readConfiguration(input);
