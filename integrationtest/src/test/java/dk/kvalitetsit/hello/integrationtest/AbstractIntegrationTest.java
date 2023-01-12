@@ -1,5 +1,6 @@
 package dk.kvalitetsit.hello.integrationtest;
 
+import org.mockserver.client.MockServerClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
@@ -10,17 +11,19 @@ import java.net.URISyntaxException;
 public abstract class AbstractIntegrationTest {
     private static final Logger logger = LoggerFactory.getLogger(AbstractIntegrationTest.class);
 
-    private static GenericContainer helloService;
+    private static GenericContainer updateService;
     private static String apiBasePath;
+
+    private static ServiceStarter serviceStarter;
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread()
         {
             public void run()
             {
-                if(helloService != null) {
-                    logger.info("Stopping hello service container: " + helloService.getContainerId());
-                    helloService.getDockerClient().stopContainerCmd(helloService.getContainerId()).exec();
+                if(updateService != null) {
+                    logger.info("Stopping hello service container: " + updateService.getContainerId());
+                    updateService.getDockerClient().stopContainerCmd(updateService.getContainerId()).exec();
                 }
             }
         });
@@ -36,11 +39,10 @@ public abstract class AbstractIntegrationTest {
         var runInDocker = Boolean.getBoolean("runInDocker");
         logger.info("Running integration test in docker container: " + runInDocker);
 
-        ServiceStarter serviceStarter;
         serviceStarter = new ServiceStarter();
         if(runInDocker) {
-            helloService = serviceStarter.startServicesInDocker();
-            apiBasePath = "http://" + helloService.getContainerIpAddress() + ":" + helloService.getMappedPort(8080);
+            updateService = serviceStarter.startServicesInDocker();
+            apiBasePath = "http://" + updateService.getContainerIpAddress() + ":" + updateService.getMappedPort(8080);
         }
         else {
             serviceStarter.startServices();
@@ -48,7 +50,11 @@ public abstract class AbstractIntegrationTest {
         }
     }
 
-    String getApiBasePath() {
-        return apiBasePath;
+    protected MockServerClient getMockServerUpdateClient() {
+        return serviceStarter.getMockServerUpdateClient();
+    }
+
+    protected MockServerClient getMockServerBackendClient() {
+        return serviceStarter.getMockServerBackendClient();
     }
 }

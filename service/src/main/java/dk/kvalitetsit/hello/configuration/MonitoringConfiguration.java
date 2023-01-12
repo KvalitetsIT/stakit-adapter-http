@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.io.IOException;
+
 
 @Configuration
 @EnableScheduling
@@ -14,7 +16,7 @@ public class MonitoringConfiguration {
     @Autowired
     private MonitoringService monitoringService;
     @Scheduled(fixedRate = 5000)
-    public void monitorThis() {
+    public void monitorThis() throws IOException, InterruptedException {
         monitoringService.loopingMonitors();
     }
 

@@ -1,11 +1,11 @@
 stakit:
-  endpoint: http://localhost:1090
+  endpoint: http://172.17.0.1:1090
   apiKey: MY-SUPE-SECRET-KEY
 frequency: PT5M
 monitoring:
   - serviceIdentifier: unikt id
     serviceName: Læsbart navn
-    endpoint: http://localhost:1080/is/ok
+    endpoint: http://172.17.0.1:1080/is/ok
   - serviceIdentifier: andet unikt id
     serviceName: Noget andet navn
-    endpoint: http://localhost:1080/is/not/ok
+    endpoint: http://172.17.0.1:1080/is/not/ok
