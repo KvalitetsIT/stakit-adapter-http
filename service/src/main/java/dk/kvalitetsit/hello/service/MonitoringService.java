@@ -5,8 +5,7 @@ import dk.kvalitetsit.hello.service.model.Monitoring;
 import dk.kvalitetsit.hello.stakitClient.StatusCode;
 import dk.kvalitetsit.hello.stakitClient.model.StatusUpdate;
 
-import java.io.IOException;
-
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public class MonitoringService {
@@ -21,20 +20,26 @@ public class MonitoringService {
         this.statusCode = statusCode;
     }
 
-    public void loopingMonitors() throws IOException, InterruptedException {
+    public void loopingMonitors() {
         List<Monitoring> monitoringList = this.configurationModel.getMonitoring();
         for (Monitoring monitoring: monitoringList){
             String serviceName = monitoring.getServiceName();
             String service = monitoring.getServiceIdentifier();
             String url = monitoring.getEndpoint();
+            StatusUpdate.Status status;
 
             boolean result = this.httpMonitorService.getResult(url);
-            System.out.println(url + ": " + result);
+            if (result){
+                status = StatusUpdate.Status.OK;
+            } else {
+                status = StatusUpdate.Status.NOT_OK;
+            }
 
             StatusUpdate statusUpdate = new StatusUpdate();
             statusUpdate.setServiceName(serviceName);
             statusUpdate.setService(service);
-            statusUpdate.setStatus(result);
+            statusUpdate.setStatus(status);
+            statusUpdate.setStatusTime(OffsetDateTime.now());
             this.statusCode.update(statusUpdate);
         }
     }

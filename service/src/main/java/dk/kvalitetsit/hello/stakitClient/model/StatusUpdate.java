@@ -3,12 +3,15 @@ package dk.kvalitetsit.hello.stakitClient.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.OffsetDateTime;
+
 public class StatusUpdate {
 
+    public enum Status{OK, NOT_OK}
     private String service;
-    private boolean status;
+    private Status status;
     @JsonProperty("status-time")
-    private String statusTime;
+    private OffsetDateTime statusTime;
     @JsonProperty("service-name")
     private String serviceName;
     private String message;
@@ -29,19 +32,19 @@ public class StatusUpdate {
         this.service = service;
     }
 
-    public boolean isStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getStatusTime() {
+    public OffsetDateTime getStatusTime() {
         return statusTime;
     }
 
-    public void setStatusTime(String statusTime) {
+    public void setStatusTime(OffsetDateTime statusTime) {
         this.statusTime = statusTime;
     }
 

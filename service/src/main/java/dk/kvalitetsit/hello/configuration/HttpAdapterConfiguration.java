@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 
 @Configuration
 @EnableScheduling
-public class HelloConfiguration{
+public class HttpAdapterConfiguration {
 
     @Bean
     public MonitoringService monitoringService(ConfigurationModel input, HttpMonitorService httpMonitorService, StatusCode statusCode) {
@@ -21,7 +21,7 @@ public class HelloConfiguration{
     }
 
     @Bean
-    public ConfigurationModel configurationModel(@Value("${Configuration-yaml}") String filePath) throws FileNotFoundException {
+    public ConfigurationModel configurationModel(@Value("${CONFIGURATION_FILE}") String filePath) throws FileNotFoundException {
         return new ConfigurationReader().readConfiguration(filePath);
     }
 

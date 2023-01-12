@@ -25,7 +25,6 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.function.Consumer;
 
@@ -44,16 +43,15 @@ public class ServiceStarter {
     private MockServerClient mockServerBackendClient;
 
     public void startServices() {
-        //System.out.println(Paths.get(".").toAbsolutePath());
         dockerNetwork = Network.newNetwork();
 
-        setupCimUpdateMockServer();
-        setupCimBackendMockServer();
+        setupUpdateMockServer();
+        setupBackendMockServer();
 
         if (Files.exists(Path.of("integrationtest/src/test/resources/TestConfiguration.yaml"))){
-            System.setProperty("Configuration-yaml", "integrationtest/src/test/resources/TestConfiguration.yaml");
+            System.setProperty("CONFIGURATION_FILE", "integrationtest/src/test/resources/TestConfiguration.yaml");
         } else {
-            System.setProperty("Configuration-yaml", "src/test/resources/TestConfiguration.yaml");
+            System.setProperty("CONFIGURATION_FILE", "src/test/resources/TestConfiguration.yaml");
         }
 
 
@@ -64,8 +62,8 @@ public class ServiceStarter {
     public GenericContainer<?> startServicesInDocker() {
         dockerNetwork = Network.newNetwork();
 
-        setupCimUpdateMockServer();
-        setupCimBackendMockServer();
+        setupUpdateMockServer();
+        setupBackendMockServer();
 
         var resourcesContainerName = "stakit-adapter-http-resources";
         var resourcesRunning = containerRunning(resourcesContainerName);
@@ -90,7 +88,7 @@ public class ServiceStarter {
 
                 .withEnv("LOG_LEVEL", "INFO")
 
-                .withEnv("Configuration-yaml", "/TestConfiguration-docker.yaml")
+                .withEnv("CONFIGURATION_FILE", "/TestConfiguration-docker.yaml")
 
                 .withClasspathResourceMapping("TestConfiguration-docker.yaml", "/TestConfiguration-docker.yaml", BindMode.READ_ONLY)
 
@@ -119,8 +117,7 @@ public class ServiceStarter {
     }
 
 
-    //Doing mockerStuff
-    private void setupCimUpdateMockServer(){
+    private void setupUpdateMockServer(){
         int phpMyAdminPort = 1080;
         int phpMyAdminContainerPort = 1080;
         Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(phpMyAdminPort), new ExposedPort(phpMyAdminContainerPort)));
@@ -130,8 +127,8 @@ public class ServiceStarter {
                 .withCreateContainerCmdModifier(cmd);
         updateservice.start();
         mockServerUpdateClient = new MockServerClient(updateservice.getContainerIpAddress(), updateservice.getMappedPort(1080));
-        mockServerUpdateClient.when(HttpRequest.request().withPath("/is/ok").withMethod("GET").withHeader("X-API-KEY", "test-key"), Times.unlimited()).respond(HttpResponse.response().withStatusCode(200));
-        mockServerUpdateClient.when(HttpRequest.request().withPath("/is/not/ok").withMethod("GET").withHeader("X-API-KEY", "test-key"), Times.unlimited()).respond(HttpResponse.response().withStatusCode(500));
+        mockServerUpdateClient.when(HttpRequest.request().withPath("/is/ok").withMethod("GET"), Times.unlimited()).respond(HttpResponse.response().withStatusCode(200));
+        mockServerUpdateClient.when(HttpRequest.request().withPath("/is/not/ok").withMethod("GET"), Times.unlimited()).respond(HttpResponse.response().withStatusCode(500));
         updateServicePort = updateservice.getMappedPort(1080);
 
         attachLogger(updateLogger, updateservice);
@@ -141,7 +138,7 @@ public class ServiceStarter {
         return mockServerUpdateClient;
     }
 
-    private void setupCimBackendMockServer(){
+    private void setupBackendMockServer(){
         int phpMyAdminPort = 1090;
         int phpMyAdminContainerPort = 1080;
         Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(phpMyAdminPort), new ExposedPort(phpMyAdminContainerPort)));

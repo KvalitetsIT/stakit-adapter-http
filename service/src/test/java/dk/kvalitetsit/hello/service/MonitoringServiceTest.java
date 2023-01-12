@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class MonitoringServiceTest {
     }
 
     @Test
-    public void testLoopingMonitors() throws IOException, InterruptedException {
+    public void testLoopingMonitors() {
         Mockito.when(httpMonitorService.getResult(Mockito.any())).thenReturn(true);
 
         monitoringService.loopingMonitors();
@@ -69,7 +68,7 @@ public class MonitoringServiceTest {
         assertEquals("name1", inputArgumentCaptorStatus.getAllValues().get(1).getServiceName());
         assertEquals("id0", inputArgumentCaptorStatus.getAllValues().get(0).getService());
         assertEquals("id1", inputArgumentCaptorStatus.getAllValues().get(1).getService());
-        assertTrue(inputArgumentCaptorStatus.getAllValues().get(0).isStatus());
-        assertTrue(inputArgumentCaptorStatus.getAllValues().get(1).isStatus());
+        assertEquals(StatusUpdate.Status.OK, inputArgumentCaptorStatus.getAllValues().get(0).getStatus());
+        assertEquals(StatusUpdate.Status.OK, inputArgumentCaptorStatus.getAllValues().get(1).getStatus());
     }
 }

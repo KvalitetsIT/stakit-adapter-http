@@ -18,9 +18,9 @@ public class UpdateIT extends AbstractIntegrationTest {
         getMockServerUpdateClient().verify(request().withPath("/is/not/ok").withMethod("GET"), VerificationTimes.exactly(1));
 
         getMockServerBackendClient().verify(request().withPath("/v1/status").withMethod("POST")
-                .withBody(new RegexBody("\\{\"service\":\"unikt id\",\"status\":false,\"message\":null,\"status-time\":.*,\"service-name\":\"Læsbart navn\"}")), VerificationTimes.atLeast(1));
+                .withBody(new RegexBody("\\{\"service\":\"unikt id\",\"status\":\"OK\",\"message\":null,\"status-time\":\"20..-..-..T..:..:.*\",\"service-name\":\"Læsbart navn\"}")), VerificationTimes.atLeast(1));
         getMockServerBackendClient().verify(request().withPath("/v1/status").withMethod("POST")
-                .withBody(new RegexBody("\\{\"service\":\"andet unikt id\",\"status\":false,\"message\":null,\"status-time\":.*,\"service-name\":\"Noget andet navn\"}")), VerificationTimes.atLeast(1));
+                .withBody(new RegexBody("\\{\"service\":\"andet unikt id\",\"status\":\"NOT_OK\",\"message\":null,\"status-time\":\"20..-..-..T..:..:.*\",\"service-name\":\"Noget andet navn\"}")), VerificationTimes.atLeast(1));
 
 
         Thread.sleep(15000);
@@ -29,8 +29,8 @@ public class UpdateIT extends AbstractIntegrationTest {
         getMockServerUpdateClient().verify(request().withPath("/is/not/ok").withMethod("GET"), VerificationTimes.exactly(4));
 
         getMockServerBackendClient().verify(request().withPath("/v1/status").withMethod("POST")
-                .withBody(new RegexBody("\\{\"service\":\"unikt id\",\"status\":false,\"message\":null,\"status-time\":.*,\"service-name\":\"Læsbart navn\"}")), VerificationTimes.atLeast(4));
+                .withBody(new RegexBody("\\{\"service\":\"unikt id\",\"status\":\"OK\",\"message\":null,\"status-time\":\"20..-..-..T..:..:.*\",\"service-name\":\"Læsbart navn\"}")), VerificationTimes.atLeast(4));
         getMockServerBackendClient().verify(request().withPath("/v1/status").withMethod("POST")
-                .withBody(new RegexBody("\\{\"service\":\"andet unikt id\",\"status\":false,\"message\":null,\"status-time\":.*,\"service-name\":\"Noget andet navn\"}")), VerificationTimes.atLeast(4));
+                .withBody(new RegexBody("\\{\"service\":\"andet unikt id\",\"status\":\"NOT_OK\",\"message\":null,\"status-time\":\"20..-..-..T..:..:.*\",\"service-name\":\"Noget andet navn\"}")), VerificationTimes.atLeast(4));
     }
 }

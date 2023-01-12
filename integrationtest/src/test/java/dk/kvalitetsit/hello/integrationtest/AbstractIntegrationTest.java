@@ -57,8 +57,4 @@ public abstract class AbstractIntegrationTest {
     protected MockServerClient getMockServerBackendClient() {
         return serviceStarter.getMockServerBackendClient();
     }
-
-    String getApiBasePath() {
-        return apiBasePath;
-    }
 }
