@@ -22,7 +22,9 @@ public class HttpAdapterConfiguration {
 
     @Bean
     public ConfigurationModel configurationModel(@Value("${CONFIGURATION_FILE}") String filePath) throws FileNotFoundException {
-        return new ConfigurationReader().readConfiguration(filePath);
+        ConfigurationModel model = new ConfigurationReader().readConfiguration(filePath);
+        System.setProperty("FREQUENCY", model.getFrequency());
+        return model;
     }
 
     @Bean

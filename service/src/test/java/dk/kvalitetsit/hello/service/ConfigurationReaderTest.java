@@ -19,8 +19,6 @@ public class ConfigurationReaderTest {
 
     @Test
     public void monitorTest() throws FileNotFoundException {
-        //System.out.println(Paths.get(".").toAbsolutePath());
-
         var input = "src/test/resources/TestConfiguration.yaml";
 
         var result = configurationReader.readConfiguration(input);
@@ -29,7 +27,7 @@ public class ConfigurationReaderTest {
         assertEquals("https://backend.dk/", result.getStakit().getEndpoint());
         assertEquals("MY-SUPE-SECRET-KEY", result.getStakit().getApiKey());
 
-        assertEquals("PT5M", result.getFrequency());
+        assertEquals("PT5S", result.getFrequency());
 
         assertNotNull(result.getMonitoring());
         assertEquals("class java.util.ArrayList", result.getMonitoring().getClass().toString());

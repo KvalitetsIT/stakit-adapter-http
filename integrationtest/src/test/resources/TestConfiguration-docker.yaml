@@ -1,7 +1,7 @@
 stakit:
   endpoint: http://172.17.0.1:1090
   apiKey: MY-SUPE-SECRET-KEY
-frequency: PT5M
+frequency: PT5S
 monitoring:
   - serviceIdentifier: unikt id
     serviceName: Læsbart navn
